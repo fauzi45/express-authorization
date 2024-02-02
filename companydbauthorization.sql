@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 01, 2024 at 10:43 AM
+-- Generation Time: Feb 02, 2024 at 11:00 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `companydborm`
+-- Database: `companydbauthorization`
 --
 
 -- --------------------------------------------------------
@@ -39,8 +39,7 @@ CREATE TABLE `departments` (
 --
 
 INSERT INTO `departments` (`id`, `name`, `createdAt`, `updatedAt`) VALUES
-(1, 'IT', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(2, 'Bootcamp', '0000-00-00 00:00:00', '2024-02-01 04:16:20');
+(1, 'test', '2024-02-02 06:52:49', '2024-02-02 06:52:49');
 
 -- --------------------------------------------------------
 
@@ -62,10 +61,7 @@ CREATE TABLE `employeeprojects` (
 --
 
 INSERT INTO `employeeprojects` (`id`, `employeeId`, `projectId`, `role`, `createdAt`, `updatedAt`) VALUES
-(1, 1, 3, NULL, '2024-02-01 08:18:58', '2024-02-01 08:18:58'),
-(2, 1, 3, 'test', '2024-02-01 08:19:31', '2024-02-01 09:31:21'),
-(3, 1, 3, 'berkebun teh', '2024-02-01 08:20:28', '2024-02-01 08:20:28'),
-(4, 1, 3, 'berkebun teh', '2024-02-01 08:45:24', '2024-02-01 08:45:24');
+(1, 2, 1, 'berkebun teh', '2024-02-02 08:42:59', '2024-02-02 08:42:59');
 
 -- --------------------------------------------------------
 
@@ -76,6 +72,8 @@ INSERT INTO `employeeprojects` (`id`, `employeeId`, `projectId`, `role`, `create
 CREATE TABLE `employees` (
   `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
   `position` varchar(255) DEFAULT NULL,
   `departmentId` int(11) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
@@ -86,9 +84,10 @@ CREATE TABLE `employees` (
 -- Dumping data for table `employees`
 --
 
-INSERT INTO `employees` (`id`, `name`, `position`, `departmentId`, `createdAt`, `updatedAt`) VALUES
-(1, 'rafi', 'SE', 1, '2024-02-01 06:50:07', '2024-02-01 06:50:07'),
-(2, 'ujsdwisan', 'deder', 2, '2024-02-01 06:50:26', '2024-02-01 07:43:52');
+INSERT INTO `employees` (`id`, `name`, `email`, `password`, `position`, `departmentId`, `createdAt`, `updatedAt`) VALUES
+(1, 'rafiser', 'fauzi@gmail.com', '$2a$10$gcmf8qM5xWz6tYlgFRVJ6OSPLYS6PlSqqMuYLyxZI/L84Rcc8aizK', 'SE', 1, '2024-02-02 04:01:59', '2024-02-02 04:01:59'),
+(2, 'rafi', 'rafi@gmail.com', '$2a$10$TngGOLt7Q6AReV9JaD9bR.YmXz5LsaOOCkgjAiFJCoJ0q/b/7faFW', 'SEFE', 1, '2024-02-02 07:35:42', '2024-02-02 07:35:42'),
+(3, 'rafi', '12@gmail.com', '$2a$10$m4r1b6yqCpHr0ME4OB9pU..A9tP5hCYUYRQpUkzfWj.u80H3haj2S', 'SEFE', 11, '2024-02-02 07:38:12', '2024-02-02 07:38:12');
 
 -- --------------------------------------------------------
 
@@ -108,7 +107,7 @@ CREATE TABLE `projects` (
 --
 
 INSERT INTO `projects` (`id`, `name`, `createdAt`, `updatedAt`) VALUES
-(3, 'Mancing', '2024-02-01 08:34:23', '2024-02-01 08:34:23');
+(1, 'Mancing', '2024-02-02 08:42:54', '2024-02-02 08:42:54');
 
 -- --------------------------------------------------------
 
@@ -128,7 +127,8 @@ INSERT INTO `sequelizemeta` (`name`) VALUES
 ('20240201033304-create-departments.js'),
 ('20240201044139-create-projects.js'),
 ('20240201063657-create-employees.js'),
-('20240201080050-create-employeeprojects.js');
+('20240201080050-create-employeeprojects.js'),
+('20240202030351-create-user.js');
 
 --
 -- Indexes for dumped tables
@@ -173,13 +173,13 @@ ALTER TABLE `sequelizemeta`
 -- AUTO_INCREMENT for table `departments`
 --
 ALTER TABLE `departments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `employeeprojects`
 --
 ALTER TABLE `employeeprojects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `employees`
@@ -191,7 +191,7 @@ ALTER TABLE `employees`
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

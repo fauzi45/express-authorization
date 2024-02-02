@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "abf3d4ac-2d64-45a0-9cb7-38bea7883c4c",
-		"name": "Mysql2 RESTFUL API with ORM",
+		"_postman_id": "39d21552-4aa8-486a-800f-f739d0a4d2b8",
+		"name": "Mysql2 RESTFUL API with ORM JWT",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "32533899"
 	},
@@ -31,10 +31,20 @@
 				{
 					"name": "GET Employee Detail",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZUlkIjoyLCJpYXQiOjE3MDY4NjA2NDMsImV4cCI6MTcwNjk0NzA0M30.hyVK8TRgFGkhp3aQOOVp00gITcZu6bXsHIfn7BOrFoA",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8000/employee/detail?id=3",
+							"raw": "localhost:8000/employee/detail",
 							"host": [
 								"localhost"
 							],
@@ -42,12 +52,6 @@
 							"path": [
 								"employee",
 								"detail"
-							],
-							"query": [
-								{
-									"key": "id",
-									"value": "3"
-								}
 							]
 						}
 					},
@@ -203,7 +207,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n}",
+							"raw": "{\r\n    \"name\": \"test\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -441,6 +445,16 @@
 				{
 					"name": "GET employee-project",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZUlkIjoyLCJpYXQiOjE3MDY4NjA2NDMsImV4cCI6MTcwNjk0NzA0M30.hyVK8TRgFGkhp3aQOOVp00gITcZu6bXsHIfn7BOrFoA",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -458,12 +472,22 @@
 					"response": []
 				},
 				{
-					"name": "GET employeeproject",
+					"name": "GET detail employeeproject",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZUlkIjoyLCJpYXQiOjE3MDY4NjA2NDMsImV4cCI6MTcwNjk0NzA0M30.hyVK8TRgFGkhp3aQOOVp00gITcZu6bXsHIfn7BOrFoA",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8000/employeeproject/detail?id=",
+							"raw": "localhost:8000/employeeproject/detail?id=1",
 							"host": [
 								"localhost"
 							],
@@ -475,7 +499,7 @@
 							"query": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "1"
 								}
 							]
 						}
@@ -485,11 +509,21 @@
 				{
 					"name": "CREATE employeeproject",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZUlkIjoyLCJpYXQiOjE3MDY4NjA2NDMsImV4cCI6MTcwNjk0NzA0M30.hyVK8TRgFGkhp3aQOOVp00gITcZu6bXsHIfn7BOrFoA",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"employeeId\" : 1,\r\n    \"projectId\" : 3,\r\n    \"role\" : \"berkebun teh\"\r\n}",
+							"raw": "{\r\n    \"projectId\" : 1,\r\n    \"role\" : \"berkebun teh\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -520,11 +554,21 @@
 				{
 					"name": "update employeeproject",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZUlkIjoxLCJpYXQiOjE3MDY4NjYxODUsImV4cCI6MTcwNjk1MjU4NX0.GMPrhewMaUKfujSrbnLqcYe42q8jW-4IvX7wGEwRekQ",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"role\" : \"test\",\r\n    \"employeeId\": \"1\"\r\n}",
+							"raw": "{\r\n    \"role\" : \"tesst\",\r\n    \"projectId\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -554,10 +598,29 @@
 				{
 					"name": "Delete employeeproject",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZUlkIjoxLCJpYXQiOjE3MDY4Njc0MDYsImV4cCI6MTcwNjk1MzgwNn0.yZ7r_WekkWQgz_hxEIYs8k1mXhYlotutqzGyUzsZdaA",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "localhost:8000/employeeproject/delete?id=62",
+							"raw": "localhost:8000/employeeproject/delete?id=1",
 							"host": [
 								"localhost"
 							],
@@ -569,7 +632,7 @@
 							"query": [
 								{
 									"key": "id",
-									"value": "62"
+									"value": "1"
 								}
 							]
 						}
@@ -577,6 +640,82 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "REGISTER EMPLOYEE",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" : \"rafi\",\r\n    \"email\" : \"122@gmail.com\",\r\n    \"password\": \"12345\",\r\n    \"position\" : \"SEFE\",\r\n    \"departmentId\" : 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/auth/register",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"auth",
+						"register"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "3",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LOGIN EMPLOYEE",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer-Token",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"fauzi@gmail.com\",\r\n    \"password\": \"12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/auth/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"auth",
+						"login"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "3",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
 		},
 		{
 			"name": "test server",
