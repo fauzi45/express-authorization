@@ -45,19 +45,10 @@ const getEmployeeProjectDetailHelper = async (id, dataEmployee) => {
 
 const createEmployeeProjectHelper = async (dataEmployee, projectId, role) => {
   try {
-    const checkEmployee = await db.employees.findOne({
-      where: { id: dataEmployee.employeeId },
-    });
     const checkProject = await db.projects.findOne({
       where: { id: projectId },
     });
-    console.log(checkEmployee);
-    if (!checkEmployee) {
-      return Promise.reject(
-        Boom.badRequest("Employee with this id doesn't exist")
-      );
-    }
-    if (!checkProject) {
+    if (_.isEmpty(checkProject)) {
       return Promise.reject(
         Boom.badRequest("Project with this id doesn't exist")
       );
@@ -73,28 +64,33 @@ const createEmployeeProjectHelper = async (dataEmployee, projectId, role) => {
   }
 };
 
-const updateEmployeeProjectHelper = async (id, employeeId, projectId, role) => {
+const updateEmployeeProjectHelper = async (
+  id,
+  dataEmployee,
+  projectId,
+  role
+) => {
   try {
-    if (employeeId) {
-      const checkEmployee = await db.employees.findOne({
-        where: { id: employeeId },
-      });
-      if (!checkEmployee) {
-        throw new Error("Employee with this id doesn't exist");
-      }
-    }
-
     const checkEmployeeProject = await db.employeeprojects.findOne({
       where: { id: id },
     });
-    if (!checkEmployeeProject) {
-      throw new Error("Employee Project with this id doesn't exist");
+    if (_.isEmpty(checkEmployeeProject)) {
+      return Promise.reject(
+        Boom.badRequest("Employee Project with this id doesn't exist")
+      );
     }
-
+    const checkProject = await db.projects.findOne({
+      where: { id: projectId },
+    });
+    if (_.isEmpty(checkProject)) {
+      return Promise.reject(
+        Boom.badRequest("Project with this id doesn't exist")
+      );
+    }
     await db.employeeprojects.update(
       {
-        employeeId: employeeId
-          ? employeeId
+        employeeId: dataEmployee.id
+          ? dataEmployee.id
           : checkEmployeeProject.dataValues.employeeId,
         projectId: projectId
           ? projectId
@@ -114,7 +110,7 @@ const deleteEmployeeProjectHelper = async (id) => {
     const checkEmployee = await db.employeeprojects.findOne({
       where: { id: id },
     });
-    if (!checkEmployee) {
+    if (_.isEmpty(checkEmployee)) {
       throw new Error("Employee Project with this id doesn't exist");
     } else {
       await db.employeeprojects.destroy({

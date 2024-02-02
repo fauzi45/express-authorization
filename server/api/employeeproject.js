@@ -48,7 +48,6 @@ const createEmployeeProject = async (req, res) => {
   try {
     const { projectId, role } = req.body;
     const dataEmployee = req.body.employeeToken;
-    console.log(dataEmployee)
     const response = await EmployeeProjectHelper.createEmployeeProjectHelper(
       dataEmployee,
       projectId,
@@ -70,10 +69,11 @@ const updateEmployeeProject = async (req, res) => {
   try {
     ValidationEmployeeProjectHelper.updateEmployeeProjectValidation(req.query);
     const { id } = req.query;
-    const { employeeId, projectId, role } = req.body;
+    const { projectId, role } = req.body;
+    const dataEmployee = req.body.employeeToken;
     const response = await EmployeeProjectHelper.updateEmployeeProjectHelper(
       id,
-      employeeId,
+      dataEmployee,
       projectId,
       role
     );
