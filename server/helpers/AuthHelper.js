@@ -28,12 +28,20 @@ const registerEmployee = async (dataObject) => {
     const employee = await db.employees.findOne({
       where: { email },
     });
+    const checkDepartment = await db.departments.findOne({
+      where: { id: departmentId },
+    });
+      console.log(checkDepartment)
+
     if (!_.isEmpty(employee)) {
       return Promise.reject(
         Boom.badRequest("EMAIL HAS BEEN USED, PLEASE TRY ANOTHER EMAIL")
       );
+    } else if (_.isEmpty(checkDepartment)) {
+      return Promise.reject(
+        Boom.badRequest("Department with this id is doesn't exist")
+      );
     }
-
     const hashedPass = __hashPassword(password);
     await db.employees.create({
       name,
@@ -42,7 +50,6 @@ const registerEmployee = async (dataObject) => {
       position,
       departmentId,
     });
-
     return Promise.resolve(true);
   } catch (err) {
     return Promise.reject(err);
@@ -66,8 +73,7 @@ const login = async (dataObject) => {
     }
 
     const token = __generateToken({
-      name: employee.name,
-      password: employee.password,
+      employeeId: employee.id,
     });
     return Promise.resolve({ token });
   } catch (err) {
