@@ -8,7 +8,9 @@ const getEmployeeProjectListHelper = async (dataEmployee) => {
       where: { employeeId: dataEmployee.employeeId },
     });
     if (_.isEmpty(checkAuthorization)) {
-      throw new Error("You are not authorized to see this data");
+      return Promise.reject(
+        Boom.unauthorized("You are not authorized to see this data")
+      );
     }
     const response = await db.employeeprojects.findAll({
       include: [
@@ -35,7 +37,9 @@ const getEmployeeProjectDetailHelper = async (id, dataEmployee) => {
       where: { employeeId: dataEmployee.employeeId },
     });
     if (_.isEmpty(checkAuthorization)) {
-      throw new Error("You are not authorized to see this data");
+      return Promise.reject(
+        Boom.unauthorized("You are not authorized to see this data")
+      );
     }
     const response = await db.employeeprojects.findOne({
       include: [
@@ -51,7 +55,7 @@ const getEmployeeProjectDetailHelper = async (id, dataEmployee) => {
     }
     return Promise.resolve(response.dataValues);
   } catch (error) {
-    throw error;
+    return Promise.reject(error);
   }
 };
 
@@ -61,7 +65,9 @@ const createEmployeeProjectHelper = async (dataEmployee, projectId, role) => {
       where: { employeeId: dataEmployee.employeeId },
     });
     if (_.isEmpty(checkAuthorization)) {
-      throw new Error("You are not authorized to create this data");
+      return Promise.reject(
+        Boom.unauthorized("You are not authorized to create this data")
+      );
     }
     const checkProject = await db.projects.findOne({
       where: { id: projectId },
@@ -78,7 +84,7 @@ const createEmployeeProjectHelper = async (dataEmployee, projectId, role) => {
     });
     return Promise.resolve(response);
   } catch (error) {
-    return Promise.reject(err);
+    return Promise.reject(error);
   }
 };
 
@@ -93,7 +99,9 @@ const updateEmployeeProjectHelper = async (
       where: { employeeId: dataEmployee.employeeId },
     });
     if (_.isEmpty(checkAuthorization)) {
-      throw new Error("You are not authorized to update this data");
+      return Promise.reject(
+        Boom.unauthorized("You are not authorized to update this data")
+      );
     }
     const checkEmployeeProject = await db.employeeprojects.findOne({
       where: { id: id },
@@ -125,7 +133,7 @@ const updateEmployeeProjectHelper = async (
     );
     return Promise.resolve([]);
   } catch (error) {
-    throw error;
+    return Promise.reject(error);
   }
 };
 
@@ -135,23 +143,26 @@ const deleteEmployeeProjectHelper = async (id,dataEmployee) => {
       where: { employeeId: dataEmployee.employeeId },
     });
     if (_.isEmpty(checkAuthorization)) {
-      throw new Error("You are not authorized to delete this data");
+      return Promise.reject(
+        Boom.unauthorized("You are not authorized to delete this data")
+      );
     }
     const checkEmployeeProject = await db.employeeprojects.findOne({
       where: { id: id },
     });
     if (_.isEmpty(checkEmployeeProject)) {
-      throw new Error("Employee Project with this id doesn't exist");
+      return Promise.reject(
+        Boom.badRequest("Employee Project with this id doesn't exist")
+      );
     }
     await db.employeeprojects.destroy({
       where: {
         id: id,
       },
     });
-
     return Promise.resolve([]);
   } catch (error) {
-    throw error;
+    return Promise.reject(error);
   }
 };
 
