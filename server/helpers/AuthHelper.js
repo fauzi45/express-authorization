@@ -61,7 +61,7 @@ const login = async (dataObject) => {
       where: { email },
     });
     if (_.isEmpty(employee)) {
-      throw new Error("Email tidak ada");
+      return Promise.reject(Boom.badRequest("Email is doesn't exist"));
     }
 
     const isPassMatched = __comparePassword(password, employee.password);
@@ -79,7 +79,48 @@ const login = async (dataObject) => {
   }
 };
 
+const changePassword = async (dataEmployee,oldPassword, newPassword, newConfirmPassword) => {
+  try {
+    const checkAuthorization = await db.employees.findOne({
+      where: { id: dataEmployee.employeeId },
+    });
+    if (_.isEmpty(checkAuthorization)) {
+      return Promise.reject(
+        Boom.unauthorized("You are not authorized to see this data")
+      );
+    }
+    const checkOldPassword = __comparePassword(
+      oldPassword,
+      checkAuthorization.password
+    );
+    if (!checkOldPassword) {
+      return Promise.reject(Boom.badRequest("Wrong Old Password"));
+    }
+    if (newPassword !== newConfirmPassword) {
+      return Promise.reject(
+        Boom.badRequest("New Password doesn't match with Confirm Password")
+      );
+    }
+
+    const hashedPass = __hashPassword(newPassword);
+    await db.employees.update(
+      {
+        password: hashedPass,
+      },
+      {
+        where: {
+          id: checkAuthorization.id,
+        },
+      }
+    );
+    return Promise.resolve(true);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 module.exports = {
   registerEmployee,
   login,
+  changePassword,
 };
