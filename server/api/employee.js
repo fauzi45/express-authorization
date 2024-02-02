@@ -34,26 +34,6 @@ const detailEmployee = async (req, res) => {
   }
 };
 
-const createEmployee = async (req, res) => {
-  try {
-    ValidationEmployee.createEmployeeValidation(req.body);
-    const { name, position, departmentId } = req.body;
-    const response = await EmployeeHelper.createEmployeeHelper(
-      name,
-      position,
-      departmentId
-    );
-    return res
-      .status(200)
-      .send({ message: "Employee data successfully created", data: response });
-  } catch (err) {
-    res.status(400).send({
-      message: "Employee data failed to be created",
-      data: err.message,
-    });
-  }
-};
-
 const updateEmployee = async (req, res) => {
   try {
     ValidationEmployee.updateEmployeeValidation(req.query);
@@ -98,7 +78,6 @@ const deleteEmployee = async (req, res) => {
 
 Router.get("/all", allEmployee);
 Router.get("/detail",Middleware.validateToken, detailEmployee);
-Router.post("/create", createEmployee);
 Router.put("/update", updateEmployee);
 Router.delete("/delete", deleteEmployee);
 
