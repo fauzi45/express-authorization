@@ -4,6 +4,12 @@ const _ = require("lodash");
 
 const getEmployeeProjectListHelper = async (dataEmployee) => {
   try {
+    const checkAuthorization = await db.employeeprojects.findOne({
+      where: { employeeId: dataEmployee.employeeId },
+    });
+    if (_.isEmpty(checkAuthorization)) {
+      throw new Error("You are not authorized to see this data");
+    }
     const response = await db.employeeprojects.findAll({
       include: [
         { model: db.employees, attributes: { exclude: ["password"] } },
@@ -25,6 +31,12 @@ const getEmployeeProjectListHelper = async (dataEmployee) => {
 
 const getEmployeeProjectDetailHelper = async (id, dataEmployee) => {
   try {
+    const checkAuthorization = await db.employeeprojects.findOne({
+      where: { employeeId: dataEmployee.employeeId },
+    });
+    if (_.isEmpty(checkAuthorization)) {
+      throw new Error("You are not authorized to see this data");
+    }
     const response = await db.employeeprojects.findOne({
       include: [
         { model: db.employees, attributes: { exclude: ["password"] } },
@@ -45,6 +57,12 @@ const getEmployeeProjectDetailHelper = async (id, dataEmployee) => {
 
 const createEmployeeProjectHelper = async (dataEmployee, projectId, role) => {
   try {
+    const checkAuthorization = await db.employeeprojects.findOne({
+      where: { employeeId: dataEmployee.employeeId },
+    });
+    if (_.isEmpty(checkAuthorization)) {
+      throw new Error("You are not authorized to create this data");
+    }
     const checkProject = await db.projects.findOne({
       where: { id: projectId },
     });
@@ -71,8 +89,14 @@ const updateEmployeeProjectHelper = async (
   role
 ) => {
   try {
+    const checkAuthorization = await db.employeeprojects.findOne({
+      where: { employeeId: dataEmployee.employeeId },
+    });
+    if (_.isEmpty(checkAuthorization)) {
+      throw new Error("You are not authorized to update this data");
+    }
     const checkEmployeeProject = await db.employeeprojects.findOne({
-      where: { id: id, employeeId: dataEmployee.employeeId },
+      where: { id: id },
     });
     if (_.isEmpty(checkEmployeeProject)) {
       return Promise.reject(
