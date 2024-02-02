@@ -72,7 +72,7 @@ const updateEmployeeProjectHelper = async (
 ) => {
   try {
     const checkEmployeeProject = await db.employeeprojects.findOne({
-      where: { id: id },
+      where: { id: id, employeeId: dataEmployee.employeeId },
     });
     if (_.isEmpty(checkEmployeeProject)) {
       return Promise.reject(
@@ -105,20 +105,26 @@ const updateEmployeeProjectHelper = async (
   }
 };
 
-const deleteEmployeeProjectHelper = async (id) => {
+const deleteEmployeeProjectHelper = async (id,dataEmployee) => {
   try {
-    const checkEmployee = await db.employeeprojects.findOne({
+    const checkAuthorization = await db.employeeprojects.findOne({
+      where: { employeeId: dataEmployee.employeeId },
+    });
+    if (_.isEmpty(checkAuthorization)) {
+      throw new Error("You are not authorized to delete this data");
+    }
+    const checkEmployeeProject = await db.employeeprojects.findOne({
       where: { id: id },
     });
-    if (_.isEmpty(checkEmployee)) {
+    if (_.isEmpty(checkEmployeeProject)) {
       throw new Error("Employee Project with this id doesn't exist");
-    } else {
-      await db.employeeprojects.destroy({
-        where: {
-          id: id,
-        },
-      });
     }
+    await db.employeeprojects.destroy({
+      where: {
+        id: id,
+      },
+    });
+
     return Promise.resolve([]);
   } catch (error) {
     throw error;

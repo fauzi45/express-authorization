@@ -93,8 +93,10 @@ const deleteEmployeeProject = async (req, res) => {
   try {
     ValidationEmployeeProjectHelper.deleteEmployeeProjectValidation(req.query);
     const { id } = req.query;
+    const dataEmployee = req.body.employeeToken;
     const response = await EmployeeProjectHelper.deleteEmployeeProjectHelper(
-      id
+      id,
+      dataEmployee
     );
     return res.status(200).send({
       message: "Employee Project data successfully deleted",
