@@ -21,6 +21,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   employees.init({
     name: DataTypes.STRING,
+    email: DataTypes.STRING,
+    password: DataTypes.STRING,
     position: DataTypes.STRING,
     departmentId: DataTypes.INTEGER
   }, {
