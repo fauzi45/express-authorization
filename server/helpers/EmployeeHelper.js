@@ -1,4 +1,5 @@
 const db = require("../../models");
+const _ = require("lodash");
 
 const getEmployeeListHelper = async () => {
   try {
@@ -23,10 +24,10 @@ const getEmployeeDetailHelper = async (dataEmployee) => {
       where: { id: dataEmployee.employeeId },
     });
     
-    if (!response) {
+    if (_.isEmpty(response)) {
       throw new Error("Employee with this id doesn't exist");
     }
-    return Promise.resolve(response.dataValues);
+    return Promise.resolve(response);
   } catch (error) {
     throw error;
   }

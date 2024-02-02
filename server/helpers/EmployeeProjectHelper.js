@@ -1,27 +1,41 @@
+const Boom = require("boom");
 const db = require("../../models");
+const _ = require("lodash");
 
-const getEmployeeProjectListHelper = async () => {
+const getEmployeeProjectListHelper = async (dataEmployee) => {
   try {
     const response = await db.employeeprojects.findAll({
-      include: [{ model: db.employees }, { model: db.projects }],
+      include: [
+        { model: db.employees, attributes: { exclude: ["password"] } },
+        { model: db.projects },
+      ],
+      where: { employeeId: dataEmployee.employeeId },
+      attributes: { exclude: ["password"] },
     });
-    if (!response) {
-      throw new Error("There's no data on Employee Project");
+    if (_.isEmpty(response)) {
+      return Promise.reject(
+        Boom.badRequest("This user has no data on employee project")
+      );
     }
     return Promise.resolve(response);
   } catch (error) {
-    throw error;
+    return Promise.reject(error);
   }
 };
 
-const getEmployeeProjectDetailHelper = async (id) => {
+const getEmployeeProjectDetailHelper = async (id, dataEmployee) => {
   try {
     const response = await db.employeeprojects.findOne({
-      include: [{ model: db.employees }, { model: db.projects }],
-      where: { id: id },
+      include: [
+        { model: db.employees, attributes: { exclude: ["password"] } },
+        { model: db.projects },
+      ],
+      where: { id: id, employeeId: dataEmployee.employeeId },
     });
-    if (!response) {
-      throw new Error("Employee Project with this id doesn't exist");
+    if (_.isEmpty(response)) {
+      return Promise.reject(
+        Boom.badRequest("This user has no data on employee project")
+      );
     }
     return Promise.resolve(response.dataValues);
   } catch (error) {
@@ -29,28 +43,33 @@ const getEmployeeProjectDetailHelper = async (id) => {
   }
 };
 
-const createEmployeeProjectHelper = async (employeeId, projectId, role) => {
+const createEmployeeProjectHelper = async (dataEmployee, projectId, role) => {
   try {
     const checkEmployee = await db.employees.findOne({
-      where: { id: employeeId },
+      where: { id: dataEmployee.employeeId },
     });
     const checkProject = await db.projects.findOne({
       where: { id: projectId },
     });
+    console.log(checkEmployee);
     if (!checkEmployee) {
-      throw new Error("Employee with this id doesn't exist");
+      return Promise.reject(
+        Boom.badRequest("Employee with this id doesn't exist")
+      );
     }
     if (!checkProject) {
-      throw new Error("Project with this id doesn't exist");
+      return Promise.reject(
+        Boom.badRequest("Project with this id doesn't exist")
+      );
     }
     const response = await db.employeeprojects.create({
-      employeeId: employeeId,
+      employeeId: dataEmployee.employeeId,
       projectId: projectId,
       role: role,
     });
     return Promise.resolve(response);
   } catch (error) {
-    throw error;
+    return Promise.reject(err);
   }
 };
 
@@ -74,11 +93,13 @@ const updateEmployeeProjectHelper = async (id, employeeId, projectId, role) => {
 
     await db.employeeprojects.update(
       {
-        employeeId: employeeId ? employeeId : checkEmployeeProject.dataValues.employeeId,
-        projectId: projectId ? projectId : checkEmployeeProject.dataValues.projectId,
-        role: role
-          ? role
-          : checkEmployeeProject.dataValues.role,
+        employeeId: employeeId
+          ? employeeId
+          : checkEmployeeProject.dataValues.employeeId,
+        projectId: projectId
+          ? projectId
+          : checkEmployeeProject.dataValues.projectId,
+        role: role ? role : checkEmployeeProject.dataValues.role,
       },
       { where: { id: id } }
     );
@@ -109,8 +130,9 @@ const deleteEmployeeProjectHelper = async (id) => {
 };
 
 module.exports = {
-  createEmployeeProjectHelper,getEmployeeProjectDetailHelper,
+  createEmployeeProjectHelper,
+  getEmployeeProjectDetailHelper,
   getEmployeeProjectListHelper,
   updateEmployeeProjectHelper,
-  deleteEmployeeProjectHelper
+  deleteEmployeeProjectHelper,
 };

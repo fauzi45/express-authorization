@@ -6,7 +6,9 @@ const Middleware = require('../middlewares/authMiddleware');
 
 const allEmployeeProject = async (req, res) => {
   try {
-    const response = await EmployeeProjectHelper.getEmployeeProjectListHelper();
+    const dataEmployee = req.body.employeeToken;
+    console.log(dataEmployee)
+    const response = await EmployeeProjectHelper.getEmployeeProjectListHelper(dataEmployee);
     return res
       .status(200)
       .send({
@@ -25,8 +27,10 @@ const detailEmployeeProject = async (req, res) => {
   try {
     ValidationEmployeeProjectHelper.detailEmployeeProjectValidation(req.query);
     const { id } = req.query;
+    const dataEmployee = req.body.employeeToken;
     const response = await EmployeeProjectHelper.getEmployeeProjectDetailHelper(
-      id
+      id,
+      dataEmployee
     );
     return res.status(200).send({
       message: "Employee Project detail data received successfully",
@@ -42,10 +46,11 @@ const detailEmployeeProject = async (req, res) => {
 
 const createEmployeeProject = async (req, res) => {
   try {
-    ValidationEmployeeProjectHelper.createEmployeeProjectValidation(req.body);
-    const { employeeId, projectId, role } = req.body;
+    const { projectId, role } = req.body;
+    const dataEmployee = req.body.employeeToken;
+    console.log(dataEmployee)
     const response = await EmployeeProjectHelper.createEmployeeProjectHelper(
-      employeeId,
+      dataEmployee,
       projectId,
       role
     );
@@ -103,9 +108,9 @@ const deleteEmployeeProject = async (req, res) => {
   }
 };
 
-Router.get("/all", allEmployeeProject);
-Router.get("/detail", detailEmployeeProject);
-Router.post("/create", Middleware.validateToken, createEmployeeProject);
-Router.put("/update", updateEmployeeProject);
-Router.delete("/delete", deleteEmployeeProject);
+Router.get("/all",Middleware.validateToken, allEmployeeProject);
+Router.get("/detail", Middleware.validateToken,detailEmployeeProject);
+Router.post("/create",Middleware.validateToken, createEmployeeProject);
+Router.put("/update", Middleware.validateToken,updateEmployeeProject);
+Router.delete("/delete",Middleware.validateToken, deleteEmployeeProject);
 module.exports = Router;

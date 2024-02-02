@@ -31,8 +31,6 @@ const registerEmployee = async (dataObject) => {
     const checkDepartment = await db.departments.findOne({
       where: { id: departmentId },
     });
-      console.log(checkDepartment)
-
     if (!_.isEmpty(employee)) {
       return Promise.reject(
         Boom.badRequest("EMAIL HAS BEEN USED, PLEASE TRY ANOTHER EMAIL")
