@@ -2,6 +2,7 @@ const Router = require("express").Router();
 
 const EmployeeHelper = require("../helpers/EmployeeHelper");
 const ValidationEmployee = require("../validation/ValidationEmployee");
+const Middleware = require('../middlewares/authMiddleware');
 
 const allEmployee = async (req, res) => {
   try {
@@ -19,13 +20,12 @@ const allEmployee = async (req, res) => {
 
 const detailEmployee = async (req, res) => {
   try {
-    ValidationEmployee.detailEmployeeValidation(req.query);
-    const { id } = req.query;
-    const response = await EmployeeHelper.getEmployeeDetailHelper(id);
+    const dataEmployee = req.body.employeeToken;
+    const response = await EmployeeHelper.getEmployeeDetailHelper(dataEmployee);
     return res.status(200).send({
       message: "Employee detail data received successfully",
       data: response,
-    });
+    }); 
   } catch (err) {
     res.status(400).send({
       message: "Employee detail data failed to be received",
@@ -97,7 +97,7 @@ const deleteEmployee = async (req, res) => {
 };
 
 Router.get("/all", allEmployee);
-Router.get("/detail", detailEmployee);
+Router.get("/detail",Middleware.validateToken, detailEmployee);
 Router.post("/create", createEmployee);
 Router.put("/update", updateEmployee);
 Router.delete("/delete", deleteEmployee);

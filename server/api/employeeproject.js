@@ -2,6 +2,7 @@ const Router = require("express").Router();
 
 const EmployeeProjectHelper = require("../helpers/EmployeeProjectHelper");
 const ValidationEmployeeProjectHelper = require("../validation/ValidationEmployeeProject");
+const Middleware = require('../middlewares/authMiddleware');
 
 const allEmployeeProject = async (req, res) => {
   try {
@@ -104,7 +105,7 @@ const deleteEmployeeProject = async (req, res) => {
 
 Router.get("/all", allEmployeeProject);
 Router.get("/detail", detailEmployeeProject);
-Router.post("/create", createEmployeeProject);
+Router.post("/create", Middleware.validateToken, createEmployeeProject);
 Router.put("/update", updateEmployeeProject);
 Router.delete("/delete", deleteEmployeeProject);
 module.exports = Router;
