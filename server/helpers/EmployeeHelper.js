@@ -33,26 +33,8 @@ const getEmployeeDetailHelper = async (dataEmployee) => {
   }
 };
 
-const createEmployeeHelper = async (name, position, departmentId) => {
-  try {
-    const checkDepartment = await db.departments.findOne({
-      where: { id: departmentId },
-    });
-    if (!checkDepartment) {
-      throw new Error("Department with this id doesn't exist");
-    }
-    const response = await db.employees.create({
-      name: name,
-      position: position,
-      departmentId: departmentId,
-    });
-    return Promise.resolve(response);
-  } catch (error) {
-    throw error;
-  }
-};
 
-const updateEmployeeHelper = async (id, name, position, departmentId) => {
+const updateEmployeeHelper = async (dataEmployee, name, position, departmentId) => {
   try {
     if (departmentId) {
       const checkDepartment = await db.departments.findOne({
@@ -63,7 +45,7 @@ const updateEmployeeHelper = async (id, name, position, departmentId) => {
       }
     }
     const checkEmployee = await db.employees.findOne({
-      where: { id: id },
+      where: { id: dataEmployee.employeeId },
     });
     if (!checkEmployee) {
       throw new Error("Employee with this id doesn't exist");
@@ -76,7 +58,7 @@ const updateEmployeeHelper = async (id, name, position, departmentId) => {
           ? departmentId
           : checkEmployee.dataValues.departmentId,
       },
-      { where: { id: id } }
+      { where: { id: checkEmployee.id } }
     );
     return Promise.resolve([]);
   } catch (error) {
@@ -105,7 +87,6 @@ const deleteEmployeeHelper = async (id) => {
 };
 
 module.exports = {
-  createEmployeeHelper,
   getEmployeeListHelper,
   getEmployeeDetailHelper,
   updateEmployeeHelper,

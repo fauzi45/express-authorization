@@ -7,7 +7,6 @@ const Middleware = require('../middlewares/authMiddleware');
 const allEmployeeProject = async (req, res) => {
   try {
     const dataEmployee = req.body.employeeToken;
-    console.log(dataEmployee)
     const response = await EmployeeProjectHelper.getEmployeeProjectListHelper(dataEmployee);
     return res
       .status(200)

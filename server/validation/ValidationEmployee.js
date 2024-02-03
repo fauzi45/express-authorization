@@ -11,16 +11,6 @@ const detailEmployeeValidation = (data) => {
   }
 };
 
-const updateEmployeeValidation = (data) => {
-  const schema = Joi.object({
-    id: Joi.number().required(),
-  });
-
-  if (schema.validate(data).error) {
-    throw Boom.badRequest(schema.validate(data).error);
-  }
-};
-
 const deleteEmployeeValidation = (data) => {
   const schema = Joi.object({
     id: Joi.number().required(),
@@ -33,6 +23,5 @@ const deleteEmployeeValidation = (data) => {
 
 module.exports = {
   detailEmployeeValidation,
-  updateEmployeeValidation,
   deleteEmployeeValidation
 };

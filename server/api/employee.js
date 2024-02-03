@@ -36,11 +36,10 @@ const detailEmployee = async (req, res) => {
 
 const updateEmployee = async (req, res) => {
   try {
-    ValidationEmployee.updateEmployeeValidation(req.query);
-    const { id } = req.query;
+    const dataEmployee = req.body.employeeToken;
     const { name, position, departmentId } = req.body;
     const response = await EmployeeHelper.updateEmployeeHelper(
-      id,
+      dataEmployee,
       name,
       position,
       departmentId
@@ -78,7 +77,7 @@ const deleteEmployee = async (req, res) => {
 
 Router.get("/all", allEmployee);
 Router.get("/detail",Middleware.validateToken, detailEmployee);
-Router.put("/update", updateEmployee);
+Router.put("/update",Middleware.validateToken, updateEmployee);
 Router.delete("/delete", deleteEmployee);
 
 module.exports = Router;
